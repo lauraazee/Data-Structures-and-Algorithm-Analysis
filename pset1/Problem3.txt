@@ -1,0 +1,31 @@
+Code Fragment A:
+
+	Runtime prediction: O(N)
+
+	Values used for N: {5, 10, 20, 30, 50, 100, 300, 500, 1000, 3000, 5000, 10000};
+
+	Corresponding runtimes in nanoseconds: [3963, 3516, 6117, 8597, 13720, 26519, 77779, 128886, 258825, 770422, 1566297, 4045730]
+
+	There seems to be a linear correlation between input size and runtime, which is consistent with what I originally predicted. The one exception is the runtime for input size 5. That input had a longer runtime than the runtime for input size 10, which shouldn't have happened. All the other runtime results, however, are consistent with my O(N) estimate.
+
+Code Fragment B:
+
+	Runtime prediction: O(N^2)
+	
+	Values used for N: {5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110}
+
+	Corresponding runtimes in nanoseconds: [10992, 1123, 3430, 6881, 11633, 17650, 24870, 33380, 43100, 54134, 66368, 79866]
+
+	There seems to be a quadratic correlation between input size and runtime, which is consistent with what I originally predicted. These results, too, show an abnormally long runtime for the first value of N fed into the fragment. All other runtime results, however, are consistent with my O(N^2) estimate.
+
+Code Fragment C:
+
+	Runtime prediction O(logN)
+
+	Values used for N: {1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000, 100000000, 500000000}
+
+	Corresponding runtimes in nanoseconds: [10101, 2193, 1533, 1873, 1896, 2061, 2340, 2400, 2768, 2993, 3237, 3356]
+
+	There seems to be a logarithmic correlation between input size and runtime, which is consistent with what I originally predicted. Again, the runtime for the first input is abnormally long, which probably has something to do with the machine rather than the code fragment, since this is a problem experienced by all three fragments. All other runtime results, however, are consistent with my O(logN) estimate.
+
+
