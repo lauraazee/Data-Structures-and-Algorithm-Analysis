@@ -1,0 +1,1 @@
+Enqueue operations and dequeue operations in my implementation have to be O(N). Each time I enqueue and dequeue something, all items must be shifted over to one stack in order for the incoming or outgoing object to arrive or leave at the right position. That means that the worst case scenario for each operation involves moving all items in the stacks once. 

@@ -1,0 +1,226 @@
+Problem 1
+
+public void printLots(List<E> L, List<Integer> P) {
+	
+	//creates an iterator for each list
+	ListIterator<Integer> iteratorP = P.listIterator;
+	ListIterator<E> iteratorL = L.listIterator;
+
+	//prints the first printLots() element
+	if (iteratorP.hasNext()) {
+		int position = iteratorP.next();
+		int elementL;
+		for (int i = 0; i < position; i++) {
+			if (iteratorL.hasNext()) {
+				elementL = iteratorL.next();
+			}
+		}
+		System.out.println(elementL);
+	}
+
+	//prints the rest of the printLots() elements
+	while (iteratorP.hasNext()) {
+		position = iteratorP.next() – position;
+		for (int i = 0; i < position; i++) {
+			if (iteratorL.hasNext()) {
+				elementL = iteratorL.next();
+			}
+		}
+		System.out.println(elementL);
+	}
+}
+
+
+Problem 2
+
+Note: In order to modify this routine to be used with any kind of comparable, you would have to change the list type inside the diamond brackets and use compareTo() rather than == and < signs. I picked integer as the list type here to make the routine a little easier to understand.
+
+//the intersectedList is the list that will hold all values in the intersection of L1 and L2
+List<Integer> intersectedList = new ArrayList<Integer>;
+ListIterator<Integer> iteratorL1 = L1.listIterator;
+ListIterator<Integer> iteratorL2 = L2.listIterator;
+
+//indicating the starting values for each list item we're looking at.
+if (iteratorL1.hasNext()) {
+	int L1 = iterator1.next();
+	if (iteratorL2.hasNext()) {
+		int L2 = iterator2.next();
+
+		//looping through the first list and checking each item against items in the second list
+		while(iteratorL1.hasNext()) {
+			if (L1 == L2) {
+				intersectedList.add(L1);
+				L1 = iteratorL1.next();
+			}
+			else if (L1 < L2) {
+				L1 = iteratorL1.next();
+			}
+			else {
+				if (iteratorL2.hasNext()) {
+					L2 = iteratorL2.next();
+				}
+			}
+		}
+
+		//taking the last item of the first list and checking it against all remainging items in the second list
+		while(iteratorL2.hasNext()) {
+			if (L1 == L2) {
+				intersectedList.add(L1);
+			}
+			else {
+				L2 = iteratorL2.next();
+			}
+		}
+	}
+}
+
+Problem 3
+
+Note: these two arrays start from the middle of the array and as you add to the stacks, stack 1's push positions approach position 0 while stack 2's push positions approach the end of the array. 
+
+public class MyStacks<E> {
+	private E[] myStacks;
+	private int myStackSize;
+	private int stack1StartingPosition;
+	private int stack2StartingPosition;
+	private int stack1PushPosition;
+	private int stack2PushPosition;
+
+	//constructor
+	public myStacks() {
+		this.myStackSize = 20; //default starting size of array
+		this.myStacks = new E[myStackSize];
+		this.stack1StartingPosition = 9;
+		this.stack2StartingPosition = 10;
+		this.stack1PushPosition = stack1StartingPosition;
+		this.stack2PushPosition = stack2StartingPosition;
+	}
+
+	/*shifts items in both stacks all the way to the end of the array. Used when the 
+	first stack needs to use space originally allotted to the second stack */
+	public int shiftStackRight() {
+		int shiftAmount = myStackSize - 1 - stack2PushPosition;
+		for (i = stack2PushPosition; n >= stack1PushPosition; i--) {
+			myStacks[i + shiftAmount] = myStacks[i];
+		}
+		return shiftAmount;
+	}
+
+	/*shifts items in both stacks all the way to the beginning of the array. Used 
+	when the second stack nees to use space originally alloted to the first stack */
+	public int shiftStackLeft() {
+		int shiftAmount = stack1PushPosition;
+		for (i = stack1PushPosition; n <= stack2PushPosition; i++) {
+			myStacks[i - shiftAmount] = myStacks[i];
+		}
+		return shiftAmount;
+	}
+
+	public void stack1push(E element) {
+		/* if there is no more room allotted to the first stack, we shift all
+		values to the end of the array */
+		if (stack1PushPosition < 0) {
+			int shiftAmount = shiftStackRight();
+			stack1StartingPosition += shiftAmount;
+			stack1PushPosition += shiftAmount;
+			stack2StartingPosition += shiftAmount;
+			stack2PushPosition += shiftAmount;
+		}
+		myStacks[stack1PushPosition] = element;
+		stack1PushPosition -= 1;
+	}
+
+	public void stack2push(E element) {
+		/* if there is no more room allotted to the second stack, we shift all
+		values to the beginning of the array */
+		if (stack2PushPosition >= myStackSize) {
+			int shiftAmount = shiftStackLeft();
+			stack1StartingPosition -= shiftAmount;
+			stack1PushPosition -= shiftAmount;
+			stack2StartingPosition -= shiftAmount;
+			stack2PushPosition -= shiftAmount;
+		}
+		myStacks[stack1PushPosition] = element;
+		stack2PushPosition += 1;
+	}
+	
+	public E stack1Pop() {
+		stack1PushPosition += 1;
+		return myStacks[stack1PushPosition];
+	}
+
+	public E stack2Pop() {
+		stack2PushPosition -= 1;
+		return myStacks[stack2PushPosition];
+	}
+
+	public E stack1Top() {
+		return myStacks[stack1PushPosition + 1];
+	}
+
+	public E stack2Top() {
+		return myStacks[stack2PushPosition - 1];
+	}
+
+	public boolean stack1IsEmpty() {
+		if (stack1PushPosition == stack1StartingPosition) {
+			return true;
+		}
+		else {return false;}
+	}
+
+	public boolean stack2IsEmpty() {
+		if (stack2PushPosition == stack2StartingPosition) {
+			return true;
+		}
+		else {return false;}
+	}
+}
+
+
+Problem 4
+
+(a) Steps to follow to get all trains in order at the output:
+
+train 4 to S1
+train 3 to S1
+train 1 to output
+train 8 to S2
+train 2 to output
+train 3 to output
+train 4 to output
+train 7 to S2
+train 6 to S2
+train 9 to S1
+train 5 to output
+train 6 to output
+train 7 to output
+train 8 to output
+train 9 to output
+
+(b) Train order that would not work:
+1,9,8,7,6,5,4,3,2
+
+The 1 is stuck all the way in the back, preventing all of the other numbers from going directly to the output. If you put 2 on a shunting yard, you can't put any larger number on the same shunting yard after it. That is because the 2 needs to go to the output before a larger number does, and a larger number sent to the shunting yard after the 2 would prevent it from getting out. Therefore the 3 has to go to a different shunting yard, and the 4 has to go to the last remaining shunting yard. Train 5, then, has nowhere to go because it can't be the first to go to the output, and yet it can't block the lower numbers from leaving the shunting yard.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
