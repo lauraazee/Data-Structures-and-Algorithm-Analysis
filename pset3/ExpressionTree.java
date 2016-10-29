@@ -14,6 +14,18 @@ public class ExpressionTree {
 		return eval(root);
 	}
 
+	public String postfix() {
+		//will return the integer value associated with evaluating
+		//the expression tree. Will need to call a private recursive
+		//method that takes the root
+	}
+
+	public String prefix() {
+		//returns String containing the corresponding prefix expression
+	}
+
+	public String infix()
+
 	private int eval(ExpressionNode t) {
 
 		//traversal to evaluate tree rooted at t and return it
