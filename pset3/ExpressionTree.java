@@ -2,11 +2,12 @@ public class ExpressionTree {
 	
 	private ExpressionNode root; 
 	private char[] operatorArray; 
+	private char[] operandArray;
 	
 	private static ExpressionTree(String postfix) {
 
 		char[] numberArray = {'1','2','3','4','5','6','7','8','9'}; 
-		char[] operatorArray = {'+','-','*','/'}; // can you do this? Do you need a constructor
+		char[] operatorArray = {'+','-','*','/'};
 		String integerBuffer = "";
 		MyStack<ExpressionNode> treeStack = new MyStack<>; //syntax
 		
@@ -48,21 +49,41 @@ public class ExpressionTree {
 		//will return the integer value associated with evaluating
 		//the expression tree. Will need to call a private recursive
 		//method that takes the root
+		return postfix(root);
 	}
 
 	public String prefix() {
-		//returns String containing the corresponding prefix expression
+		return prefix(root);
 	}
 
-	public String infix()
-
- 
-		//traversal to evaluate tree rooted at t and return it
+	public String infix() {
+		return infix(root);
 	}
 
-	private int eval(ExpressionNode tree) {
-		postfix(tree);
-		for 
+	private int eval(ExpressionNode t) {
+	}
+
+	private String prefix(ExpressionNode t) {
+		if (t != null) {
+			System.out.println(t.element);
+			prefix(t.left);
+			prefix(t.right);
+		}
+	}
+	private String postfix(ExpressionNode t) {
+		if (t != null) {
+			postfix(t.left);
+			postfix(t.right);
+			System.out.println(t.element);
+		}
+	}
+
+	private String infix(ExpressionNode t) {
+		if (t != null) {
+			infix(t.left);
+			System.out.println(t.element);
+			infix(t.right);
+		}
 	}
 
 
@@ -79,7 +100,7 @@ public class ExpressionTree {
 
 		ExpressionNode(AnyType theElement, ExpressionNode lt, ExpressionNode rt) {
 			for (int i = 0; i < operatorArray.length(); i++) {
-				if (theElement == operatorArray[i]) {
+				if (theElement == operatorArray[i]) { // can this class access the array?
 					operator = theElement;
 				}
 				else { //integers
