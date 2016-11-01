@@ -3,13 +3,17 @@ public class ExpressionTree {
 	private ExpressionNode root; 
 	private char[] operatorArray; 
 	private char[] operandArray;
+	private MyStack<Integer> evalStack;
 	
 	private static ExpressionTree(String postfix) {
 
-		char[] numberArray = {'1','2','3','4','5','6','7','8','9'}; 
-		char[] operatorArray = {'+','-','*','/'};
+		numberArray = {'1','2','3','4','5','6','7','8','9'}; 
+		operatorArray = {'+','-','*','/'};
+		evalStack = new MyStack<Integer>;
+		
 		String integerBuffer = "";
 		MyStack<ExpressionNode> treeStack = new MyStack<>; //syntax
+		
 		
 		
 		for (int i = 0; i < postfix.length; i++) {
@@ -61,6 +65,36 @@ public class ExpressionTree {
 	}
 
 	private int eval(ExpressionNode t) {
+		int rightValue;
+		int leftValue;
+		int subTreeValue;
+		
+		if (t != null) {
+			eval(t.left);
+			eval(t.right);
+
+			switch (t.element) {
+				case '+': 	rightValue = evalStack.pop();
+							leftValue = evalStack.pop();
+							subTreeValue = rightValue + leftValue;
+							break;
+				case '-': 	rightValue = evalStack.pop();
+							leftValue = evalStack.pop();
+							subTreeValue = rightValue - leftValue;
+							break;
+				case '*':	rightValue = evalStack.pop();
+							leftValue = evalStack.pop();
+							subTreeValue = rightValue * leftValue;
+							break;
+				case '/':	rightValue = evalStack.pop();
+							leftValue = evalStack.pop();
+							subTreeValue = rightValue + leftValue;
+							break;
+				default:	evalStack.push();
+				}
+			}
+		}
+		return subTreeValue;
 	}
 
 	private String prefix(ExpressionNode t) {
@@ -69,6 +103,7 @@ public class ExpressionTree {
 			prefix(t.left);
 			prefix(t.right);
 		}
+
 	}
 	private String postfix(ExpressionNode t) {
 		if (t != null) {
