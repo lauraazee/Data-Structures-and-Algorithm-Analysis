@@ -20,7 +20,9 @@
  * Note that all "matching" is based on the compareTo method.
  * @author Mark Allen Weiss
  */
-public class AvlTree<AnyType extends Comparable<? super AnyType>>
+import java.util.LinkedList;
+
+public class AvlTree
 {
     /**
      * Construct the tree.
@@ -34,7 +36,7 @@ public class AvlTree<AnyType extends Comparable<? super AnyType>>
      * Insert into the tree; duplicates are ignored.
      * @param x the item to insert.
      */
-    public void insert( AnyType x )
+    public void insert( String x )
     {
         root = insert( x, root );
     }
@@ -43,7 +45,7 @@ public class AvlTree<AnyType extends Comparable<? super AnyType>>
      * Remove from the tree. Nothing is done if x is not found.
      * @param x the item to remove.
      */
-    public void remove( AnyType x )
+    public void remove( String x )
     {
         root = remove( x, root );
     }
@@ -55,12 +57,12 @@ public class AvlTree<AnyType extends Comparable<? super AnyType>>
      * @param t the node that roots the subtree.
      * @return the new root of the subtree.
      */
-    private AvlNode<AnyType> remove( AnyType x, AvlNode<AnyType> t )
+    private AvlNode remove( String x, AvlNode t )
     {
         if( t == null )
             return t;   // Item not found; do nothing
             
-        int compareResult = x.compareTo( t.element );
+        int compareResult = x.compareTo( t.word );
             
         if( compareResult < 0 )
             t.left = remove( x, t.left );
@@ -68,8 +70,8 @@ public class AvlTree<AnyType extends Comparable<? super AnyType>>
             t.right = remove( x, t.right );
         else if( t.left != null && t.right != null ) // Two children
         {
-            t.element = findMin( t.right ).element;
-            t.right = remove( t.element, t.right );
+            t.word = findMin( t.right ).word;
+            t.right = remove( t.word, t.right );
         }
         else
             t = ( t.left != null ) ? t.left : t.right;
@@ -80,22 +82,22 @@ public class AvlTree<AnyType extends Comparable<? super AnyType>>
      * Find the smallest item in the tree.
      * @return smallest item or null if empty.
      */
-    public AnyType findMin( )
+    public String findMin( )
     {
         if( isEmpty( ) )
             throw new UnderflowException( );
-        return findMin( root ).element;
+        return findMin( root ).word;
     }
 
     /**
      * Find the largest item in the tree.
      * @return the largest item of null if empty.
      */
-    public AnyType findMax( )
+    public String findMax( )
     {
         if( isEmpty( ) )
             throw new UnderflowException( );
-        return findMax( root ).element;
+        return findMax( root ).word;
     }
 
     /**
@@ -165,7 +167,7 @@ public class AvlTree<AnyType extends Comparable<? super AnyType>>
         checkBalance( root );
     }
     
-    private int checkBalance( AvlNode<AnyType> t )
+    private int checkBalance( AvlNode t )
     {
         if( t == null )
             return -1;
@@ -334,23 +336,25 @@ public class AvlTree<AnyType extends Comparable<? super AnyType>>
         return rotateWithRightChild( k1 );
     }
 
-    private static class AvlNode<AnyType>
+    private static class AvlNode
     {
             // Constructors
-        AvlNode( AnyType theElement )
+        AvlNode( String theWord, int theLineNumbers )
         {
-            this( theElement, null, null );
+            this( theWord, theLineNumbers, null, null );
         }
 
-        AvlNode( AnyType theElement, AvlNode<AnyType> lt, AvlNode<AnyType> rt )
+        AvlNode( String theWord, int theLineNumbers, AvlNode lt, AvlNode rt )
         {
-            element  = theElement;
+            word  = theWord;
+            lineNumbers = theLineNumbers;
             left     = lt;
             right    = rt;
             height   = 0;
         }
 
-        AnyType           element;      // The data in the node
+        String            word;
+        LinkedList		  lineNumbers;
         AvlNode<AnyType>  left;         // Left child
         AvlNode<AnyType>  right;        // Right child
         int               height;       // Height
@@ -358,6 +362,9 @@ public class AvlTree<AnyType extends Comparable<? super AnyType>>
 
       /** The tree root. */
     private AvlNode<AnyType> root;
+
+    public class UnderflowException extends RuntimeException {
+	}
 
 
         // Test program
